@@ -1,4 +1,27 @@
 {
-  "Гостиница Казахстан": {"description":"Известное здание Алматы, объект архитектуры советского периода. Подробнее в справочном источнике.","source":"https://en.wikipedia.org/wiki/Hotel_Kazakhstan","photos":"https://commons.wikimedia.org/w/index.php?search=Hotel+Kazakhstan+Almaty&title=Special:MediaSearch&type=image"},
-  "Вознесенский собор": {"description":"Исторический собор в Алматы. Справочный материал содержит сведения об истории здания.","source":"https://en.wikipedia.org/wiki/Ascension_Cathedral,_Almaty","photos":"https://commons.wikimedia.org/w/index.php?search=Ascension+Cathedral+Almaty&title=Special:MediaSearch&type=image"}
+  "Гостиница Казахстан": {
+    "description": "Известное здание Алматы, объект архитектуры советского периода. Подробнее в справочном источнике.",
+    "source": "https://en.wikipedia.org/wiki/Hotel_Kazakhstan",
+    "photos": "https://commons.wikimedia.org/w/index.php?search=Hotel+Kazakhstan+Almaty&title=Special:MediaSearch&type=image"
+  },
+  "Вознесенский собор": {
+    "description": "Исторический собор в Алматы. Справочный материал содержит сведения об истории здания.",
+    "source": "https://en.wikipedia.org/wiki/Ascension_Cathedral,_Almaty",
+    "photos": "https://commons.wikimedia.org/w/index.php?search=Ascension+Cathedral+Almaty&title=Special:MediaSearch&type=image"
+  },
+  "Дворец Республики": {
+    "description": "Концертное здание Алматы.",
+    "source": "https://en.wikipedia.org/w/index.php?search=Palace+of+Republic+Almaty",
+    "photos": "https://commons.wikimedia.org/w/index.php?search=Palace+of+Republic+Almaty&title=Special:MediaSearch&type=image"
+  },
+  "Театр оперы и балета имени Абая": {
+    "description": "Здание театра оперы и балета в Алматы.",
+    "source": "https://en.wikipedia.org/w/index.php?search=Abay+Opera+House+Almaty",
+    "photos": "https://commons.wikimedia.org/w/index.php?search=Abay+Opera+House+Almaty&title=Special:MediaSearch&type=image"
+  },
+  "Комплекс Арасан": {
+    "description": "Банный комплекс Алматы.",
+    "source": "https://en.wikipedia.org/w/index.php?search=Arasan+baths+Almaty",
+    "photos": "https://commons.wikimedia.org/w/index.php?search=Arasan+baths+Almaty&title=Special:MediaSearch&type=image"
+  }
 }

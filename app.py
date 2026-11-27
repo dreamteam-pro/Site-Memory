@@ -22,11 +22,11 @@ st.write('Исследуйте архитектуру города, её ист�
 data=json.loads(Path(__file__).with_name('buildings.json').read_text(encoding='utf-8'))
 PROMPT='''Ты архитектурный ассистент SITE MEMORY. Проанализируй фото: предполагаемый стиль, видимые материалы, пропорции, характерные элементы (Site DNA). Отделяй наблюдения от предположений. Используй только предоставленные исторические сведения, не выдумывай факты или источники. Предложи три концепции обновления: историческая, современная, экологичная. Укажи, что требуется проверка архитектором. Отвечай на русском.'''
 
-def ask(prompt,image):
+def ask(prompt,image,*other_images):
     try:
         key=st.secrets['GEMINI_API_KEY']
         client=genai.Client(api_key=key)
-        result=client.models.generate_content(model='gemini-3.1-flash-lite',contents=[prompt,image])
+        result=client.models.generate_content(model='gemini-3.1-flash-lite',contents=[prompt,image,*other_images])
         return result.text or 'Модель не вернула текст.'
     except Exception as e:
         st.error('Запрос не выполнен. Проверьте секрет GEMINI_API_KEY, доступность модели и лимиты API. Тип ошибки: '+type(e).__name__)
@@ -50,10 +50,46 @@ with scan:
     if st.session_state.get('analysis'): st.markdown(st.session_state.analysis)
 with memory:
     st.header('02 / Memory View')
-    if context:
-        st.subheader(selected); st.write(context['description']); st.link_button('Открыть справочный источник',context['source']); st.link_button('Найти фотографии в Wikimedia Commons',context['photos']); st.caption('Исторические фото необходимо выбрать и проверить вручную; автоматического сопоставления пока нет.')
-        if image: st.image(image,width=450,caption='Современное фото пользователя')
-    else: st.info('Выберите объект во вкладке Scan & Identify.')
+    st.write('У каждого места есть своя история. Сравните прошлое и настоящее.')
+    names=list(data)
+    memory_name=st.selectbox('Исторический объект',names,index=names.index(selected) if selected in names else 0,key='memory_object')
+    record=data[memory_name]
+    st.subheader(memory_name)
+    st.write(record['description'])
+    st.link_button('История объекта',record['source'])
+    st.link_button('Найти архивное фото',record['photos'])
+    old_file=st.file_uploader('Архивная фотография',type=['jpg','jpeg','png'],key='memory_old')
+    old_date=st.text_input('Год или период архивного снимка (если известен)')
+    old_source=st.text_input('Источник архивного фото (ссылка или название архива)')
+    new_file=st.file_uploader('Современное фото (необязательно, если уже загружено в Scan)',type=['jpg','jpeg','png'],key='memory_new')
+    def read_memory_photo(file):
+        if file is None: return None
+        try:
+            im=Image.open(file).convert('RGB'); im.thumbnail((1600,1600)); return im
+        except Exception:
+            st.error('Не удалось открыть фото.'); return None
+    old_image=read_memory_photo(old_file)
+    new_image=read_memory_photo(new_file) if new_file else image
+    left,right=st.columns(2)
+    with left:
+        st.markdown('### PAST / Прошлое')
+        if old_image: st.image(old_image,caption=old_date or 'Дата не указана',use_container_width=True)
+        else: st.info('Загрузите архивную фотографию.')
+        if old_source: st.caption('Источник: '+old_source)
+    with right:
+        st.markdown('### PRESENT / Настоящее')
+        if new_image: st.image(new_image,caption='Современное фото пользователя',use_container_width=True)
+        else: st.info('Загрузите современную фотографию.')
+    confirmed=st.checkbox('Я проверил(а), что обе фотографии относятся к выбранному объекту')
+    import hashlib
+    signature=hashlib.sha256(repr((memory_name,old_date,old_source)).encode()+(old_image.tobytes() if old_image else b'')+(new_image.tobytes() if new_image else b'')).hexdigest()
+    if st.button('Сравнить с помощью ИИ',disabled=not (old_image and new_image and confirmed)):
+        with st.spinner('ИИ сравнивает фотографии…'):
+            result=ask('Ты архитектурный ассистент. Первое фото архивное, второе современное. Объект со слов пользователя: '+memory_name+'. Период: '+old_date+'. Источник со слов пользователя: '+old_source+'. Сравни видимые элементы фасада, материалы, окружение и изменения. Отдели наблюдения от предположений. Учитывай ракурс, освещение и качество фото. Не выдумывай даты, причины изменений и исторические факты. Если объекты не совпадают, предупреди. Ответ на русском.',old_image,new_image)
+            st.session_state['memory_result']=(signature,result)
+    saved=st.session_state.get('memory_result')
+    if confirmed and saved and saved[0]==signature and saved[1]: st.markdown(saved[1])
+    st.caption('Архивные материалы выбираются вручную. ИИ сравнивает видимые признаки, но не подтверждает подлинность снимков. Используйте фотографии с разрешением на использование.')
 with transform:
     st.header('03 / Transform Studio')
     st.caption('Базовое редактирование фотографии, без ИИ.')
