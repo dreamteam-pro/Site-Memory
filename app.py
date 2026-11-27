@@ -5,9 +5,20 @@ import json
 from pathlib import Path
 
 st.set_page_config(page_title='SITE MEMORY | 4WARD',page_icon='🏛️',layout='wide')
-st.markdown('''<style>.stApp{background:#142326;color:#e9eee8} h1,h2,h3{color:#c5dfbd!important} [data-testid="stSidebar"]{background:#203438} </style>''',unsafe_allow_html=True)
+st.markdown("""<style>
+.block-container {max-width: 1150px; padding-top: 3rem; padding-bottom: 3rem;}
+h1,h2,h3 {letter-spacing: -0.025em; color: #542934;}
+[data-testid="stTabs"] [role="tab"][aria-selected="true"] {color: #542934; background: #F1D6CE; border-radius: 8px 8px 0 0;}
+[data-testid="stTabs"] [data-baseweb="tab-highlight"] {background-color: #B57C88;}
+[data-testid="stButton"] button:not(:disabled):hover {background: #F1D6CE; color: #542934; border-color: #B57C88;}
+[data-testid="stFileUploaderDropzone"] {background: #F1D6CE;}
+[data-testid="stTabs"] [role="tab"] {font-weight: 600;}
+[data-testid="stFileUploaderDropzone"] {border: 1px dashed #CEACA6; border-radius: 12px;}
+</style>""", unsafe_allow_html=True)
 st.title('SITE MEMORY')
 st.caption('4WARD / PAST · PRESENT · FUTURE / ALMATY')
+st.markdown('### Discover the past. Reimagine the future.')
+st.write('Исследуйте архитектуру города, её историю и возможности обновления вместе с ИИ.')
 data=json.loads(Path(__file__).with_name('buildings.json').read_text(encoding='utf-8'))
 PROMPT='''Ты архитектурный ассистент SITE MEMORY. Проанализируй фото: предполагаемый стиль, видимые материалы, пропорции, характерные элементы (Site DNA). Отделяй наблюдения от предположений. Используй только предоставленные исторические сведения, не выдумывай факты или источники. Предложи три концепции обновления: историческая, современная, экологичная. Укажи, что требуется проверка архитектором. Отвечай на русском.'''
 
