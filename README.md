@@ -1,2 +1,9 @@
-# Site-Memory
-AI-powered architecture platform by 4WARD
+# SITE MEMORY — 4WARD
+1. Создайте бесплатный аккаунт GitHub и публичный репозиторий site-memory.
+2. Загрузите app.py, requirements.txt, buildings.json и README.md в корень репозитория.
+3. В https://aistudio.google.com/apikey создайте API-ключ на бесплатном проекте. Не публикуйте ключ.
+4. В https://share.streamlit.io/ войдите через GitHub, Create app, выберите репозиторий, branch main, main file app.py.
+5. В Advanced settings / Secrets добавьте GEMINI_API_KEY = "ваш ключ". Deploy.
+6. Загрузите фото, выберите объект вручную и запустите анализ. Проверьте AI Redesign. Не вводите личные данные.
+
+Модель gemini-3.1-flash-lite. Бесплатные лимиты зависят от аккаунта. Исторические материалы — стартовые справочные ссылки, не проверенная архивная коллекция. Transform Studio — обычная коррекция изображения; AI Redesign — текст; Community Hub — черновики только в сессии. Автоматическое распознавание объекта, общая база идей и генерация изображений пока не реализованы. Код проверен синтаксически, реальный API и облачный запуск требуют проверки владельцем аккаунта.
